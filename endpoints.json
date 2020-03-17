@@ -1,0 +1,200 @@
+{
+  "GET /api": {
+    "description": "Serves a json representation of all the available endpoints of the api."
+  },
+
+  "GET /api/topics": {
+    "description": "Serves an array of all topics.",
+    "queries": [],
+    "exampleResponse": {
+      "topics": [{ "slug": "football", "description": "Footie!" }]
+    }
+  },
+
+  "POST /api/topics": {
+    "description": "Posts a new topic.",
+    "queries": [],
+    "exampleRequest": {
+      "description": "the smell of a mown lawn",
+      "slug": "grass"
+    },
+    "exampleResponse": {
+      "description": "the smell of a mown lawn",
+      "slug": "grass"
+    }
+  },
+
+  "GET /api/articles": {
+    "description": "Serves an array of all articles.",
+    "queries": ["author", "topic", "sort_by", "order"],
+    "exampleResponse": {
+      "articles": [
+        {
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "weegembump",
+          "body": "Text from the article..",
+          "created_at": 1527695953341
+        }
+      ]
+    }
+  },
+
+  "POST /api/articles": {
+    "description": "Posts a new article.",
+    "queries": [],
+    "exampleRequest": {
+      "title": "Lord Rex",
+      "topic": "mitch",
+      "author": "donovan",
+      "body": "Lord Rex is a bad man."
+    },
+    "exampleResponse": {
+      "article": {
+        "title": "Lord Rex",
+        "topic": "mitch",
+        "author": "donovan",
+        "body": "Lord Rex is a bad man.",
+        "article_id": 200,
+        "created_at": 1527695953341,
+        "votes": 200
+      }
+    }
+  },
+
+  "GET /api/users": {
+    "description": "Serves an array of all users.",
+    "queries": [],
+    "exampleResponse": {
+      "topics": [
+        {
+          "username": "dahlia",
+          "name": "D Jones",
+          "avatar_url": "www.bing.co.uk/flower.jpeg"
+        }
+      ]
+    }
+  },
+
+  "POST /api/users": {
+    "description": "Posts a new user.",
+    "queries": [],
+    "exampleRequest": {
+      "username": "dahlia",
+      "name": "D Jones",
+      "avatar_url": "www.bing.co.uk/flower.jpeg"
+    },
+    "exampleResponse": {
+      "username": "dahlia",
+      "name": "D Jones",
+      "avatar_url": "www.bing.co.uk/flower.jpeg"
+    }
+  },
+
+  "GET /api/users/:username": {
+    "description": "Serves the details of one user, by username.",
+    "queries": [],
+    "exampleResponse": {
+      "user": {
+        "username": "dahlia",
+        "avatar_url": "www.google.com/flower.jpg",
+        "name": "Rita O'hearne"
+      }
+    }
+  },
+
+  "GET /api/articles/:article_id": {
+    "description": "Serves the details of one article, by ID.",
+    "queries": [],
+    "exampleResponse": {
+      "article": {
+        "author": "dahlia",
+        "title": "New Waste",
+        "article_id": 50,
+        "body": "Waste mgmt is a real issue...",
+        "created_at": 1527695953341,
+        "votes": 43,
+        "comment_count": 5
+      }
+    }
+  },
+
+  "PATCH /api/articles/:article_id": {
+    "description": "Patches (updates) the vote count of one article, by ID, and returns that article.",
+    "queries": [],
+    "exampleRequest": {
+      "inc_votes": 5
+    },
+    "exampleResponse": {
+      "article": {
+        "author": "dahlia",
+        "title": "New Waste",
+        "article_id": 50,
+        "body": "Waste mgmt is a real issue...",
+        "created_at": 1527695953341,
+        "votes": 143,
+        "comment_count": 5
+      }
+    }
+  },
+
+  "DELETE /api/articles/:article_id": {
+    "description": "Deletes an article, by ID, returning no body.",
+    "queries": [],
+    "exampleResponse": {}
+  },
+
+  "GET /api/articles/:article_id/comments": {
+    "description": "Serves a comments array of the comments of one article, by ID.",
+    "queries": ["sort_by", "order"],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 5,
+          "votes": 4,
+          "created_at": 1527695953341,
+          "author": "dahlia",
+          "body": "what a load of tripe"
+        }
+      ]
+    }
+  },
+
+  "POST /api/articles/:article_id/comments": {
+    "description": "Posts a new comment, referencing one article which is selected by ID.",
+    "queries": [],
+    "exampleRequest": { "username": "dahlia", "body": "what a load of tripe" },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 5,
+        "votes": 0,
+        "created_at": 1527695953341,
+        "author": "dahlia",
+        "body": "what a load of tripe"
+      }
+    }
+  },
+
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes a comment, by ID, returning no body.",
+    "queries": [],
+    "exampleResponse": {}
+  },
+
+  "PATCH /api/comments/:comment_id": {
+    "description": "Patches (updates) the vote count of one comment, by ID, and returns that comment.",
+    "queries": [],
+    "exampleRequest": {
+      "inc_votes": 2
+    },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 5,
+        "votes": 9,
+        "created_at": 1527695953341,
+        "author": "dahlia",
+        "body": "what a load of tripe"
+      }
+    }
+  }
+}
