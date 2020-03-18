@@ -490,8 +490,13 @@ exports.fetchCommentsByArticle = (
             // if (commentsArr.length === 0) {
             //   return Promise.reject({ status: 404, customStatus: "404a" });
             // } else {
+
             return {
-              comments: commentsArr.slice(p * limit - limit, p * limit),
+              comments:
+                limit === "none"
+                  ? commentsArr
+                  : commentsArr.slice(p * limit - limit, p * limit),
+
               total_count: commentsArr.length
             };
             // }
