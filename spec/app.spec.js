@@ -464,6 +464,16 @@ describe("/api", () => {
           expect(res.body.total_count).to.equal(12);
         });
     });
+    it("GET 200 returns an array of article objects, limit specifiable as 'none'", () => {
+      return request(app)
+        .get("/api/articles?limit=none")
+        .expect(200)
+        .then(res => {
+          expect(res.body.articles).to.be.an("Array");
+          expect(res.body.articles.length).to.equal(12);
+          expect(res.body.total_count).to.equal(12);
+        });
+    });
     it("GET 200 returns an array of article objects, page and limit specifiable", () => {
       return request(app)
         .get("/api/articles?limit=6&p=1")

@@ -400,7 +400,10 @@ exports.fetchArticleData = (
             calculateVotesAndParseIntCommentCount(item);
           });
           return {
-            articles: articleData.slice(p * limit - limit, p * limit),
+            articles:
+              limit === "none"
+                ? articleData
+                : articleData.slice(p * limit - limit, p * limit),
             total_count: articleData.length
           }; // articleData is array
 
