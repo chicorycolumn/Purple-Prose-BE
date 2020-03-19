@@ -118,8 +118,12 @@ exports.updateArticleDetails = (
 };
 //THE FUNCTIONS THAT ARE ROUTED TO:
 
-exports.fetchArticleVotesJunctionTable = () => {
-  return connection.select("*").from("users_articles_table");
+exports.fetchArticleVotesJunctionTable = ({ voting_user, article_id }) => {
+  return connection
+    .select("*")
+    .from("users_articles_table")
+    .where("voting_user", voting_user)
+    .andWhere("inc_votes", article_id);
 };
 
 exports.addVoteToArticleByUser = (

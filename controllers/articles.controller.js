@@ -11,7 +11,7 @@ const {
 } = require("../models/articles.model");
 
 exports.getArticleVotesJunctionTable = (req, res, next) => {
-  fetchArticleVotesJunctionTable()
+  fetchArticleVotesJunctionTable(req.query)
     .then(article_votes_junction => {
       res.send({ article_votes_junction });
     })
