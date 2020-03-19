@@ -123,7 +123,7 @@ exports.fetchArticleVotesJunctionTable = ({ voting_user, article_id }) => {
     .select("*")
     .from("users_articles_table")
     .where("voting_user", voting_user)
-    .andWhere("inc_votes", article_id);
+    .andWhere("article_id", article_id);
 };
 
 exports.addVoteToArticleByUser = (
