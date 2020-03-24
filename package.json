@@ -4,6 +4,8 @@
   "description": "bc-nc-news",
   "main": "index.js",
   "scripts": {
+    "sayhello": "echo hello",
+    "pglist": "psql -l",
     "setup-dbs": "psql -f ./db/setup.sql",
     "seed": "knex seed:run",
     "test-utils": "clear && mocha spec/utils.spec.js",
@@ -31,7 +33,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "knex": "^0.20.11",
+    "knex": "^0.20.13",
     "pg": "^7.18.2",
     "psql": "0.0.1"
   },
