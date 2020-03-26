@@ -11,6 +11,7 @@ exports.loginUser = (req, res, next) => {
 
   login(username, password).then(([user, passwordIsValid]) => {
     if (!user || !passwordIsValid) {
+      res.send({ loginError: "Invalid username or password" });
       next({ status: 401, msg: "Invalid username or password, my friend." });
     } else {
       const token = jwt.sign(
@@ -22,7 +23,7 @@ exports.loginUser = (req, res, next) => {
 
         JWT_SECRET
       );
-      res.send({ token, username });
+      res.send({ token, username, loginError: null });
       //res.send({ msg: "Successful login, my friend."});
     }
   });
