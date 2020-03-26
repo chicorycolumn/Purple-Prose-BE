@@ -71,17 +71,23 @@ exports.createNewUser = ({ username, password, ...unnecessaryKeys }) => {
 
   console.log(`in model with username and password: ${username}, ${password}`);
 
-  encryptedPassword = bcrypt.hashSync(password, 5);
+  return doesValueExistInTable(username, "username", "users").then(res => {
+    if (res) {
+      return { err: "Username already taken", user: null };
+    } else {
+      encryptedPassword = bcrypt.hashSync(password, 5);
 
-  return connection
-    .insert({
-      username: username,
-      password: encryptedPassword
-    })
-    .into("users")
-    .returning("*")
-    .then(userArr => {
-      console.log("success!");
-      return userArr[0];
-    });
+      return connection
+        .insert({
+          username: username,
+          password: encryptedPassword
+        })
+        .into("users")
+        .returning("*")
+        .then(userArr => {
+          console.log("success!");
+          return { err: null, user: userArr[0] };
+        });
+    }
+  });
 };
