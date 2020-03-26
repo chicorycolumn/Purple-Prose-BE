@@ -8,8 +8,10 @@ exports.login = (username, password) => {
     .where({ username })
     .first()
     .then(user => {
-      console.log(user);
-      return Promise.all([user, bcrypt.compare(password, user.password)]);
+      if (user === undefined) {
+        return [null, null, false];
+      }
+      return Promise.all([user, bcrypt.compare(password, user.password), true]);
       // return Promise.all([user, password === user.password]);
     });
 };

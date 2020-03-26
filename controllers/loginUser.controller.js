@@ -9,9 +9,12 @@ exports.loginUser = (req, res, next) => {
   console.log(req.body);
   const { username, password } = req.body;
 
-  login(username, password).then(([user, passwordIsValid]) => {
-    if (!user || !passwordIsValid) {
-      res.send({ loginError: "Invalid username or password" });
+  login(username, password).then(([user, passwordIsValid, userExists]) => {
+    if (!userExists) {
+      res.status(401).send({ loginError: "No such user" });
+      next({ status: 401, msg: "Invalid username or password, my friend." });
+    } else if (!user || !passwordIsValid) {
+      res.status(401).send({ loginError: "Invalid password" });
       next({ status: 401, msg: "Invalid username or password, my friend." });
     } else {
       const token = jwt.sign(
