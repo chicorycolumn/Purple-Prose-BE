@@ -1,5 +1,5 @@
 const apiRouter = require("express").Router();
-const { authorizeUser } = require("./controllers/authorizeUser.controller");
+const { authorizeUser } = require("../controllers/authorizeUser.controller");
 const topicsRouter = require("./topicsRouter");
 const usersRouter = require("./usersRouter");
 const articlesRouter = require("./articlesRouter");
