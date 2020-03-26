@@ -11,7 +11,6 @@ exports.patchUserDetails = (req, res, next) => {
 };
 
 exports.getUserByUsername = (req, res, next) => {
-  //console.log("get userbyusername con###########");
   fetchUsers(req.params)
     .then(userArr => {
       const user = userArr[0]; // !!!!
@@ -21,18 +20,8 @@ exports.getUserByUsername = (req, res, next) => {
 };
 
 exports.getUsers = (req, res, next) => {
-  // console.log("get user con###########");
-  console.log(111);
-  console.dir(req);
-  console.log(111);
   fetchUsers({})
     .then(users => {
-      //users.validatedUser = req.user;
-
-      // console.log(222);
-      // console.dir(users);
-      // console.log(222);
-
       res.send({ users: users, validatedUser: req.user });
     })
     .catch(err => next(err));

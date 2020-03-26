@@ -59,21 +59,24 @@ exports.createNewUser = ({
   name,
   username,
   avatar_url,
+  password,
   ...unnecessaryKeys
 }) => {
   if (Object.keys(unnecessaryKeys).length) {
     return Promise.reject({ status: 400, customStatus: "400a" });
   }
 
+  console.log(`in model with username and password: ${username}, ${password}`);
+
   return connection
     .insert({
-      name: name,
-      avatar_url: avatar_url,
-      username: username
+      username: username,
+      password: password
     })
     .into("users")
     .returning("*")
     .then(userArr => {
+      console.log("success!");
       return userArr[0];
     });
 };
