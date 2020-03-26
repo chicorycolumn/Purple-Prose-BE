@@ -222,6 +222,7 @@ module.exports = [
     title: "High Altitude Cooking",
     topic: "cooking",
     author: "happyamy2016",
+    votes: 1000,
     body:
       "Most backpacking trails vary only a few thousand feet elevation. However, many trails can be found above 10,000 feet. But what many people don’t take into consideration at these high altitudes is how these elevations affect their cooking.",
     created_at: 1527391948514
