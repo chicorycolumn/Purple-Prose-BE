@@ -9,11 +9,11 @@ const loginRouter = require("./loginRouter");
 const { getEndpoints } = require("../controllers/api.controller");
 const { handle405s } = require("../errors/errors");
 
+apiRouter.use(authorizeUser);
 apiRouter.use("/topics", topicsRouter);
 apiRouter.use("/articles", articlesRouter);
 apiRouter.use("/comments", commentsRouter);
 apiRouter.use("/login", loginRouter);
-apiRouter.use(authorizeUser);
 apiRouter.use("/users", usersRouter);
 
 apiRouter
