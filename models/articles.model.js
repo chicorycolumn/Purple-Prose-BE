@@ -406,7 +406,7 @@ exports.fetchArticleData = (
 
           if (sort_by === "votes") {
             articleData.sort((a, b) => {
-              order === "desc" ? b.age - a.age : a.age - b.age;
+              order === "desc" ? b.votes - a.votes : a.votes - b.votes;
             });
           }
 
