@@ -11,11 +11,12 @@ const {
   getArticleVotesJunctionTable
 } = require("../controllers/articles.controller");
 const { handle405s } = require("../errors/errors");
+const { authorizeUser } = require("../controllers/authorizeUser.controller");
 
 articlesRouter
   .route("/")
   .get(getArticles)
-  .post(postNewArticle)
+  .post(authorizeUser, postNewArticle)
   .all(handle405s);
 
 articlesRouter
@@ -26,14 +27,14 @@ articlesRouter
 articlesRouter
   .route("/:article_id")
   .get(getArticleByID)
-  .patch(patchArticleDetails)
-  .delete(dropArticleByID)
+  .patch(authorizeUser, patchArticleDetails)
+  .delete(authorizeUser, dropArticleByID)
   .all(handle405s);
 
 articlesRouter
   .route("/:article_id/comments")
   .get(getCommentsByArticle)
-  .post(postNewCommentOnArticle)
+  .post(authorizeUser, postNewCommentOnArticle)
   .all(handle405s);
 
 module.exports = articlesRouter;

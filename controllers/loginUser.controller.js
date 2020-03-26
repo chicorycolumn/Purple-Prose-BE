@@ -22,7 +22,7 @@ exports.loginUser = (req, res, next) => {
 
         JWT_SECRET
       );
-      res.send({ token });
+      res.send({ token, username });
       //res.send({ msg: "Successful login, my friend."});
     }
   });

@@ -1,4 +1,6 @@
-const usersRouter = require("express").Router(); // still using express, right?
+const usersRouter = require("express").Router();
+const { authorizeUser } = require("../controllers/authorizeUser.controller");
+
 const {
   getUserByUsername,
   getUsers,
@@ -10,7 +12,7 @@ const { handle405s } = require("../errors/errors");
 usersRouter
   .route("/:username")
   .get(getUserByUsername)
-  .patch(patchUserDetails)
+  .patch(authorizeUser, patchUserDetails)
   .all(handle405s);
 
 usersRouter
