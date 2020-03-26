@@ -1,5 +1,6 @@
 const connection = require("../db/connection.js");
 const { doesValueExistInTable } = require("../db/utils/utils");
+const bcrypt = require("bcrypt");
 
 exports.updateUserDetails = (
   { username },
@@ -57,6 +58,12 @@ exports.fetchUsers = ({ username }) => {
   });
 };
 
+// const encryptedUserData = userData.map(user => {
+//   return { ...user, password: bcrypt.hashSync(user.password, 5) };
+// });
+
+// const usersInsertions = knex("users").insert(encryptedUserData);
+
 exports.createNewUser = ({ username, password, ...unnecessaryKeys }) => {
   if (Object.keys(unnecessaryKeys).length) {
     return Promise.reject({ status: 400, customStatus: "400a" });
@@ -64,10 +71,12 @@ exports.createNewUser = ({ username, password, ...unnecessaryKeys }) => {
 
   console.log(`in model with username and password: ${username}, ${password}`);
 
+  encryptedPassword = bcrypt.hashSync(password, 5);
+
   return connection
     .insert({
       username: username,
-      password: password
+      password: encryptedPassword
     })
     .into("users")
     .returning("*")
