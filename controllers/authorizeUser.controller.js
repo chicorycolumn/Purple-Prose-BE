@@ -15,9 +15,12 @@ exports.authorizeUser = (req, res, next) => {
       const token = authorization.split(" ")[1];
       jwt.verify(token, JWT_SECRET, (err, payload) => {
         if (err) {
-          next({ status: 401, msg: "I am afraid you are not allowed here." });
+          console.log(">>>not logged in<<<");
+          next();
+          //next({ status: 401, msg: "I am afraid you are not allowed here." });
         } else {
           req.user = payload;
+          res.send({ validatedUser: req.user });
           next();
         }
       });
