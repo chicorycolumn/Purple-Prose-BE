@@ -1,38 +1,47 @@
-const {topicData, articleData, commentData, userData} = require('../data/index.js'); // Have now made index file.
-// Q: Are these actually present in source? Or just testData object?
-// A: Yes, this works fine, as it turns out.
-
-const { formatDates, formatComments, makeRefObj } = require('../utils/utils');
+const {
+  topicData,
+  articleData,
+  commentData,
+  userData
+} = require("../data/index.js"); // This is either the test or dev data based on prior variable, cos this is the super index.js.
+const bcrypt = require("bcrypt");
+const { formatDates, formatComments, makeRefObj } = require("../utils/utils");
 
 exports.seed = function(knex) {
   return knex.migrate
-  .rollback()
-  .then(() => knex.migrate.latest())
-  .then(() => {
-    const topicsInsertions = knex('topics').insert(topicData);
-    const usersInsertions = knex('users').insert(userData);
-
-  return Promise.all([topicsInsertions, usersInsertions])
+    .rollback() // Drop the tables.
+    .then(() => knex.migrate.latest()) // Create the tables anew.
     .then(() => {
-      //console.log("Have executed Promise.all in Seed file.")
+      const topicsInsertions = knex("topics").insert(topicData);
 
-      const formattedArticleData = formatDates(articleData)
+      const encryptedUserData = userData.map(user => {
+        return { ...user, password: bcrypt.hashSync(user.password, 5) };
+      });
 
-      //console.log("Just after forEach timestamp.")
+      const usersInsertions = knex("users").insert(encryptedUserData);
 
-      return knex('articles').insert(formattedArticleData).returning('*')
-      .then((articleDataFromTable) => {
+      return Promise.all([topicsInsertions, usersInsertions]).then(() => {
+        const formattedArticleData = formatDates(articleData);
 
-      const articleRef = makeRefObj(articleDataFromTable, 'title', 'article_id')
+        return knex("articles")
+          .insert(formattedArticleData)
+          .returning("*")
+          .then(articleDataFromTable => {
+            const articleRef = makeRefObj(
+              articleDataFromTable,
+              "title",
+              "article_id"
+            );
 
-      const formattedComments = formatComments(commentData, articleRef)
+            const formattedComments = formatComments(commentData, articleRef);
 
-      return knex('comments').insert(formattedComments).returning('*')
-      })
-    })
-  })
+            return knex("comments")
+              .insert(formattedComments)
+              .returning("*");
+          });
+      });
+    });
 };
-
 
 // exports.seed = function(knex){
 // return knex.migrate.rollback() // calls the down functions
@@ -50,18 +59,7 @@ exports.seed = function(knex) {
 // })
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-      /* 
+/* 
       NB1
 
       Your article data is currently in the incorrect format 
@@ -75,8 +73,7 @@ exports.seed = function(knex) {
       the data after it's been seeded.
       */
 
-
-            /* 
+/* 
       NB2
 
       Your comment data is currently in the incorrect 

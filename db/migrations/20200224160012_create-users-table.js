@@ -3,6 +3,7 @@ exports.up = function(knex) {
     userTable.string("username").primary();
     userTable.string("avatar_url");
     userTable.string("name").notNullable();
+    userTable.string("password").notNullable();
   });
 };
 

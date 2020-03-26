@@ -1,8 +1,9 @@
-var express = require('express')
-var cors = require('cors')
-var app = express()
+var express = require("express");
+var cors = require("cors");
+var app = express();
+const { authorizeUser } = require("./controllers/authorizeUser.controller");
 
-app.use(cors())
+app.use(cors());
 
 app.use(express.json());
 const apiRouter = require("./routes/apiRouter");
@@ -12,6 +13,7 @@ const {
   handle404s
 } = require("./errors/errors");
 
+// app.use("/*", authorizeUser);
 app.use("/api", apiRouter);
 app.use("/*", handle404s);
 app.use(pSQLErrorsHandler);
