@@ -264,14 +264,7 @@ describe("/api", () => {
           .expect(200)
           .then(res => {
             expect(res.body.user).to.be.an("Object");
-            expect(res.body.user).to.have.all.keys([
-              "username",
-              "avatar_url",
-              "name"
-            ]);
-            expect(res.body.user.avatar_url).to.equal(
-              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
-            );
+            expect(res.body.user).to.have.all.keys(["username", "password"]);
           });
       });
       it("GET 404a returns error if non-existent username.", () => {
@@ -283,10 +276,10 @@ describe("/api", () => {
           });
       });
     });
-    it("PATCH 200 returns updated user with name changed according to request body. #updateUserDetails", () => {
+    it("PATCH 200 returns updated user with password changed according to request body. #updateUserDetails", () => {
       return request(app)
         .patch("/api/users/icellusedkars")
-        .send({ name: "Samuel" })
+        .send({ password: "newpass" })
         .expect(200)
         .then(res => {
           return request(app)
@@ -294,51 +287,50 @@ describe("/api", () => {
             .expect(200)
             .then(res => {
               expect(res.body.user.username).to.equal("icellusedkars");
-              expect(res.body.user.name).to.equal("Samuel");
+              expect(res.body.user.password).to.equal("newpass");
             });
         });
     });
-    it("PATCH 200 returns updated user with avatar_url changed according to request body", () => {
-      return request(app)
-        .patch("/api/users/icellusedkars")
-        .send({
-          avatar_url: "www.facebook.com/profile.jpg"
-        })
-        .expect(200)
-        .then(res => {
-          return request(app)
-            .get("/api/users/icellusedkars")
-            .expect(200)
-            .then(res => {
-              expect(res.body.user.username).to.equal("icellusedkars");
-              expect(res.body.user.avatar_url).to.equal(
-                "www.facebook.com/profile.jpg"
-              );
-            });
-        });
-    });
-    it("PATCH 200 returns updated user with avatar_url AND name changed according to request body", () => {
-      return request(app)
-        .patch("/api/users/icellusedkars")
-        .send({
-          avatar_url: "www.facebook.com/profile.jpg",
-          name: "Samuel"
-        })
-        .expect(200)
-        .then(res => {
-          expect(res.body.user.username).to.equal("icellusedkars");
-          expect(res.body.user.name).to.equal("Samuel");
-          expect(res.body.user.avatar_url).to.equal(
-            "www.facebook.com/profile.jpg"
-          );
-        });
-    });
+    // it("PATCH 200 returns updated user with avatar_url changed according to request body", () => {
+    //   return request(app)
+    //     .patch("/api/users/icellusedkars")
+    //     .send({
+    //       avatar_url: "www.facebook.com/profile.jpg"
+    //     })
+    //     .expect(200)
+    //     .then(res => {
+    //       return request(app)
+    //         .get("/api/users/icellusedkars")
+    //         .expect(200)
+    //         .then(res => {
+    //           expect(res.body.user.username).to.equal("icellusedkars");
+    //           expect(res.body.user.avatar_url).to.equal(
+    //             "www.facebook.com/profile.jpg"
+    //           );
+    //         });
+    //     });
+    // });
+    // it("PATCH 200 returns updated user with avatar_url AND name changed according to request body", () => {
+    //   return request(app)
+    //     .patch("/api/users/icellusedkars")
+    //     .send({
+    //       avatar_url: "www.facebook.com/profile.jpg",
+    //       name: "Samuel"
+    //     })
+    //     .expect(200)
+    //     .then(res => {
+    //       expect(res.body.user.username).to.equal("icellusedkars");
+    //       expect(res.body.user.name).to.equal("Samuel");
+    //       expect(res.body.user.avatar_url).to.equal(
+    //         "www.facebook.com/profile.jpg"
+    //       );
+    //     });
+    // });
     it("PATCH 404a returns error when username valid but no correspond.", () => {
       return request(app)
         .patch("/api/users/NON_EXI_USER")
         .send({
-          avatar_url: "www.facebook.com/profile.jpg",
-          name: "Samuel"
+          password: "newpass"
         })
         .expect(404)
         .then(res => {
@@ -353,21 +345,19 @@ describe("/api", () => {
         .then(res => {
           expect(res.body.user).to.eql({
             username: "icellusedkars",
-            avatar_url:
-              "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4",
-            name: "sam"
+            password: "icellusedkars"
           });
         });
     });
-    it("PATCH 400a returns error when fields missing in request, eg mistyped keys.", () => {
-      return request(app)
-        .patch("/api/users/icellusedkars")
-        .send({ nameeeeeeeeeeeeeeee: "Samuel" })
-        .expect(400)
-        .then(res => {
-          expect(res.body.msg).to.equal(myErrMsgs["400a"]);
-        });
-    });
+    // it("PATCH 400a returns error when fields missing in request, eg mistyped keys.", () => {
+    //   return request(app)
+    //     .patch("/api/users/icellusedkars")
+    //     .send({ nameeeeeeeeeeeeeeee: "Samuel" })
+    //     .expect(400)
+    //     .then(res => {
+    //       expect(res.body.msg).to.equal(myErrMsgs["400a"]);
+    //     });
+    // });
     // it("PATCH 400d returns error when avatar_url fails url regex test.", () => {
     //   return request(app)
     //     .patch("/api/comments/1")
@@ -380,19 +370,19 @@ describe("/api", () => {
     //       expect(res.body.msg).to.equal(myErrMsgs["400d"]);
     //     });
     // });
-    it("PATCH 400a returns error when request contains other values.", () => {
-      return request(app)
-        .patch("/api/users/icellusedkars")
-        .send({
-          avatar_url: "www.facebook.com/profile.jpg",
-          name: "Samuel",
-          BADKEY: "NO NEED FOR THIS"
-        })
-        .expect(400)
-        .then(res => {
-          expect(res.body.msg).to.equal(myErrMsgs["400a"]);
-        });
-    });
+    // it("PATCH 400a returns error when request contains other values.", () => {
+    //   return request(app)
+    //     .patch("/api/users/icellusedkars")
+    //     .send({
+    //       avatar_url: "www.facebook.com/profile.jpg",
+    //       name: "Samuel",
+    //       BADKEY: "NO NEED FOR THIS"
+    //     })
+    //     .expect(400)
+    //     .then(res => {
+    //       expect(res.body.msg).to.equal(myErrMsgs["400a"]);
+    //     });
+    // });
     it("Responds 405 if any other methods are used at this endpoint", () => {
       const url = "/api/users/:username";
       return Promise.all([request(app).del(url), request(app).post(url)]).then(
