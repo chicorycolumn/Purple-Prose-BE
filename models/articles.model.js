@@ -4,11 +4,19 @@ const { doesValueExistInTable } = require("../db/utils/utils");
 function calculateVotesAndParseIntCommentCount(articleObject) {
   articleObject.comment_count = parseInt(articleObject.comment_count);
 
-  if (articleObject.additionalVotes !== undefined) {
-    articleObject.votes =
-      parseInt(articleObject.votes) + parseInt(articleObject.additionalVotes);
-    delete articleObject.additionalVotes;
+  if (articleObject.votes === undefined || articleObject.votes === null) {
+    articleObject.votes = 0;
   }
+  if (
+    articleObject.additionalVotes === undefined ||
+    articleObject.additionalVotes === null
+  ) {
+    articleObject.additionalVotes = 0;
+  }
+
+  articleObject.votes =
+    parseInt(articleObject.votes) + parseInt(articleObject.additionalVotes);
+  delete articleObject.additionalVotes;
 }
 
 //THE FUNCTION THAT ROUTES ALL PATCH REQUESTS FROM THIS ENDPOINT:
@@ -403,8 +411,9 @@ exports.fetchArticleData = (
           articleData.forEach(item => {
             calculateVotesAndParseIntCommentCount(item);
           });
-
+          console.log(1111111);
           if (sort_by === "votes") {
+            console.log(2222222);
             articleData.sort((a, b) => {
               order === "desc" ? b.votes - a.votes : a.votes - b.votes;
             });
