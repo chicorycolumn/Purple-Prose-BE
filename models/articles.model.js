@@ -354,10 +354,10 @@ exports.fetchArticleData = (
           .orderBy(`table_of_articles_with_commentcount.${sort_by}`, order);
       })
 
-      .modify(queryBuilder => {
-        if (sort_by === undefined) {
-        }
-      })
+      // .modify(queryBuilder => {
+      //   if (sort_by === undefined) {
+      //   }
+      // })
 
       .modify(queryBuilder => {
         if (article_id !== undefined) {
@@ -403,6 +403,13 @@ exports.fetchArticleData = (
           articleData.forEach(item => {
             calculateVotesAndParseIntCommentCount(item);
           });
+
+          if (sort_by === "votes") {
+            articleData.sort((a, b) => {
+              order === "desc" ? b.age - a.age : a.age - b.age;
+            });
+          }
+
           return {
             articles:
               limit === "none"
