@@ -27,9 +27,13 @@ exports.getUsers = (req, res, next) => {
   console.log(111);
   fetchUsers({})
     .then(users => {
-      users.validatedUser = req.user;
+      //users.validatedUser = req.user;
 
-      res.send({ users });
+      // console.log(222);
+      // console.dir(users);
+      // console.log(222);
+
+      res.send({ users: users, validatedUser: req.user });
     })
     .catch(err => next(err));
 };
