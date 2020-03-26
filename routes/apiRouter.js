@@ -13,7 +13,7 @@ apiRouter.use("/topics", topicsRouter);
 apiRouter.use("/articles", articlesRouter);
 apiRouter.use("/comments", commentsRouter);
 apiRouter.use("/login", loginRouter);
-app.use("/*", authorizeUser);
+// app.use("/*", authorizeUser);
 apiRouter.use("/users", usersRouter);
 
 apiRouter
