@@ -11,10 +11,10 @@ exports.loginUser = (req, res, next) => {
 
   login(username, password).then(([user, passwordIsValid, userExists]) => {
     if (!userExists) {
-      res.status(404).send({ loginError: "No such user" });
+      res.status(200).send({ loginError: "No such user" });
       next({ status: 401, msg: "Invalid username or password, my friend." });
     } else if (!user || !passwordIsValid) {
-      res.status(404).send({ loginError: "Invalid password" });
+      res.status(200).send({ loginError: "Invalid password" });
       next({ status: 401, msg: "Invalid username or password, my friend." });
     } else {
       const token = jwt.sign(
