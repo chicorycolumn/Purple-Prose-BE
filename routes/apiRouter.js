@@ -1,5 +1,5 @@
 const apiRouter = require("express").Router();
-
+const { authorizeUser } = require("./controllers/authorizeUser.controller");
 const topicsRouter = require("./topicsRouter");
 const usersRouter = require("./usersRouter");
 const articlesRouter = require("./articlesRouter");
@@ -10,6 +10,7 @@ const { getEndpoints } = require("../controllers/api.controller");
 const { handle405s } = require("../errors/errors");
 
 apiRouter.use("/topics", topicsRouter);
+app.use("/*", authorizeUser);
 apiRouter.use("/users", usersRouter);
 apiRouter.use("/articles", articlesRouter);
 apiRouter.use("/comments", commentsRouter);
