@@ -20,6 +20,7 @@ exports.authorizeUser = (req, res, next) => {
           //next({ status: 401, msg: "I am afraid you are not allowed here." });
         } else {
           req.user = payload;
+          // res.validatedUser = ({ validatedUser: req.user });
           next();
         }
       });
