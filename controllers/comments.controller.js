@@ -5,6 +5,7 @@ const {
 } = require("../models/comments.model");
 
 exports.patchCommentDetails = (req, res, next) => {
+  console.log("controllerrr");
   updateCommentDetails(req.params, req.body, req.query)
     .then(comment => res.send({ comment }))
     .catch(err => next(err));

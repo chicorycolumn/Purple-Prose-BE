@@ -496,31 +496,73 @@ exports.fetchCommentsByArticle = (
       }
     })
     .then(() => {
-      //Check if article_id exists in articles, if not, then throw error, but if so, then send back any result, incl empty array.
-
       if (Object.keys(badUrlQueries).length) {
         return Promise.reject({ status: 400, customStatus: "400c" });
-      } else
-        return connection
-          .select("comment_id", "votes", "created_at", "author", "body")
-          .from("comments")
-          .where("article_id", article_id)
-          .orderBy(sort_by, order)
-          .then(commentsArr => {
-            // if (commentsArr.length === 0) {
-            //   return Promise.reject({ status: 404, customStatus: "404a" });
-            // } else {
+      }
 
-            return {
-              comments:
-                limit === "none"
-                  ? commentsArr
-                  : commentsArr.slice(p * limit - limit, p * limit),
+      //****************** */
+      else
+        function GET_ADDITIONAL_COMMENT_VOTES(qb) {
+          qb.from("comments")
+            .rightJoin(
+              "users_comments_table",
+              "comments.comment_id",
+              "users_comments_table.comment_id"
+            )
+            .groupBy("comments.comment_id")
+            .sum({ additionalVotes: "users_comments_table.inc_votes" })
+            //.sumDistinct({ additionalVotes: "users_articles_table.inc_votes" })
+            .select("comments.comment_id")
+            .then(x => {
+              return x;
+            });
+        }
 
-              total_count: commentsArr.length
-            };
-            // }
+      return connection
+        .select(
+          "comments.comment_id",
+          "comments.votes",
+          "comments.created_at",
+          "comments.author",
+          "comments.body"
+        )
+        .from("comments")
+        .where("comments.article_id", article_id)
+
+        .leftJoin(
+          "users_comments_table",
+          "comments.comment_id",
+          "users_comments_table.comment_id"
+        )
+        .groupBy("comments.comment_id")
+        .sum({ additionalVotes: "users_comments_table.inc_votes" })
+
+        .orderBy(sort_by, order)
+        .then(commentsArr => {
+          commentsArr.forEach(commentObj => {
+            if (!commentObj.additionalVotes) {
+              commentObj.additionalVotes = 0;
+            }
+
+            if (!commentObj.votes) {
+              commentObj.votes = 0;
+            }
+
+            commentObj.votes =
+              parseInt(commentObj.votes) + parseInt(commentObj.additionalVotes);
+
+            delete commentObj.additionalVotes;
           });
+
+          return {
+            comments:
+              limit === "none"
+                ? commentsArr
+                : commentsArr.slice(p * limit - limit, p * limit),
+
+            total_count: commentsArr.length
+          };
+        });
     });
 };
 

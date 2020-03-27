@@ -13,13 +13,68 @@ exports.fetchCommentByID = ({ comment_id }) => {
     });
 };
 
+exports.addVoteToCommentByUser = (
+  { comment_id },
+  { inc_votes = 0, voting_user }
+) => {
+  console.log("modellll");
+  // Checking if trying to submit invalid vote.
+  if (inc_votes !== 1 && inc_votes !== -1 && inc_votes !== 0) {
+    return Promise.reject({ status: 400, customStatus: "400d" });
+  }
+  console.log("here?");
+  return connection
+    .select("*")
+    .from("users_comments_table") //MAKE THIS TABLE.
+    .where("voting_user", voting_user)
+    .andWhere("comment_id", comment_id)
+    .then(rows => {
+      if (rows.length) {
+        //Checking if same user trying to upvote or downvote s/th that is already upvoted/downvoted.
+        if (
+          (rows[0].inc_votes === 1 && inc_votes === 1) ||
+          (rows[0].inc_votes === -1 && inc_votes === -1)
+        ) {
+          return Promise.reject({ status: 400 });
+        } else {
+          //Increment the votes.
+          return connection("users_comments_table")
+            .where("voting_user", voting_user)
+            .andWhere("comment_id", comment_id)
+            .increment("inc_votes", inc_votes)
+            .returning("*")
+            .then(rows => {
+              return rows[0];
+            });
+        }
+      }
+      // Adding a new vote to article from this specific user.
+      return connection
+        .insert({
+          voting_user: voting_user,
+          comment_id: comment_id,
+          inc_votes: inc_votes
+        })
+        .into("users_comments_table")
+        .returning("*")
+        .then(resArr => {
+          return resArr[0];
+        });
+    });
+};
+
 exports.updateCommentDetails = (
   { comment_id },
-  { inc_votes, body, ...badKeys },
+  { inc_votes, voting_user, body, ...badKeys },
   queries
 ) => {
   if (Object.keys(badKeys).length > 0) {
     return Promise.reject({ status: 400, customStatus: "400a" });
+  } else if (inc_votes !== undefined && voting_user !== undefined) {
+    return this.addVoteToCommentByUser(
+      { comment_id },
+      { inc_votes, voting_user }
+    );
   } else
     return connection("comments")
       .where({ comment_id: comment_id })

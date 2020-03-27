@@ -360,7 +360,7 @@ describe("/api", () => {
     // });
     // it("PATCH 400d returns error when avatar_url fails url regex test.", () => {
     //   return request(app)
-    //     .patch("/api/comments/1")
+    //     .patch("/api/users/1")
     //     .send({
     //       avatar_url: "/not.a.valid.url",
     //       name: "Samuel"
