@@ -1,5 +1,14 @@
 const connection = require("../db/connection.js");
 
+exports.fetchCommentVotesJunctionTable = ({ voting_user, comment_id }) => {
+  console.log("modelllll");
+  return connection
+    .select("*")
+    .from("users_comments_table")
+    .where("voting_user", voting_user)
+    .andWhere("comment_id", comment_id);
+};
+
 exports.fetchCommentByID = ({ comment_id }) => {
   return connection("comments")
     .select("*")

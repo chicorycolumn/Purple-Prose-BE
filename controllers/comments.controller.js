@@ -1,8 +1,18 @@
 const {
   updateCommentDetails,
   deleteCommentByID,
-  fetchCommentByID
+  fetchCommentByID,
+  fetchCommentVotesJunctionTable
 } = require("../models/comments.model");
+
+exports.getCommentVotesJunctionTable = (req, res, next) => {
+  console.log("controllerrrrr");
+  fetchCommentVotesJunctionTable(req.query)
+    .then(comment_votes_junction => {
+      res.send({ comment_votes_junction });
+    })
+    .catch(err => next(err));
+};
 
 exports.patchCommentDetails = (req, res, next) => {
   console.log("controllerrr");

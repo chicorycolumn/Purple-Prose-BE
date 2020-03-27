@@ -2,10 +2,16 @@ const commentsRouter = require("express").Router(); // still using express, righ
 const {
   patchCommentDetails,
   dropCommentByID,
-  getCommentByID
+  getCommentByID,
+  getCommentVotesJunctionTable
 } = require("../controllers/comments.controller");
 const { handle405s } = require("../errors/errors");
 const { authorizeUser } = require("../controllers/authorizeUser.controller");
+
+commentsRouter
+  .route("/votes")
+  .get(getCommentVotesJunctionTable)
+  .all(handle405s);
 
 commentsRouter
   .route("/:comment_id")
