@@ -486,6 +486,7 @@ exports.fetchCommentsByArticle = (
     ...badUrlQueries
   }
 ) => {
+  console.log("Helloo");
   return connection
     .select("*")
     .from("articles")
