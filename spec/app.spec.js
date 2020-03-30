@@ -164,14 +164,12 @@ describe("/api", () => {
     });
     it("Responds 405 if any other methods are used at this endpoint", () => {
       const url = "/api/topics";
-      return Promise.all([request(app).del(url), request(app).patch(url)]).then(
-        resArr => {
-          resArr.forEach(response => {
-            expect(405);
-            expect(response.body.msg).to.equal(myErrMsgs["405"]);
-          });
-        }
-      );
+      return Promise.all([request(app).del(url)]).then(resArr => {
+        resArr.forEach(response => {
+          expect(405);
+          expect(response.body.msg).to.equal(myErrMsgs["405"]);
+        });
+      });
     });
   });
   describe("/users", () => {

@@ -20,3 +20,16 @@ exports.createNewTopic = ({ description, slug, ...unnecessaryKeys }) => {
       return topicArr[0];
     });
 };
+
+exports.updateTopic = ({ slug, description }) => {
+  return connection("topics")
+    .select("*")
+    .where("slug", slug)
+    .update("description", description)
+    .returning("*")
+    .then(topicArr => {
+      if (topicArr.length !== 1) {
+        return Promise.reject({ status: 404, customStatus: "404a" });
+      } else return topicArr[0];
+    });
+};
