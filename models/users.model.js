@@ -43,11 +43,12 @@ exports.fetchUsers = ({ username }) => {
     } else
       return connection("users")
         .select("*")
+        .orderBy("username", "asc")
         .modify(queryBuilder => {
           if (username !== undefined) {
             queryBuilder = queryBuilder
               .where({ username: username })
-              .orderBy("username")
+
               .then(userArray => {
                 if (userArray.length === 0) {
                 } else {

@@ -252,6 +252,7 @@ exports.fetchArticleData = (
     vote_direction = "up",
     limit = 10,
     p = 1,
+    search,
     minutes = 100000000, // This is just to pass tests, change to 10 as default.
     ...badUrlQueries
   }
@@ -346,6 +347,19 @@ exports.fetchArticleData = (
             title
           );
         }
+        if (search !== undefined) {
+          queryBuilder
+            .where(
+              "table_of_articles_with_commentcount.title",
+              "like",
+              `%${search}%`
+            )
+            .orWhere(
+              "table_of_articles_with_commentcount.body",
+              "like",
+              `%${search}%`
+            );
+        }
       })
 
       //HERE WE COULDNT ACCESS TOPIC EG
@@ -411,12 +425,11 @@ exports.fetchArticleData = (
           articleData.forEach(item => {
             calculateVotesAndParseIntCommentCount(item);
           });
-          console.log(1111111);
+
           if (sort_by === "votes") {
-            console.log(2222222);
-            articleData.sort((a, b) => {
-              order === "desc" ? b.votes - a.votes : a.votes - b.votes;
-            });
+            articleData.sort((a, b) =>
+              order === "desc" ? b.votes - a.votes : a.votes - b.votes
+            );
           }
 
           return {

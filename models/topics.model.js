@@ -27,6 +27,7 @@ exports.updateTopic = ({ slug, description }) => {
     .where("slug", slug)
     .update("description", description)
     .returning("*")
+    .orderBy("slug", "asc")
     .then(topicArr => {
       if (topicArr.length !== 1) {
         return Promise.reject({ status: 404, customStatus: "404a" });
