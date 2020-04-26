@@ -351,12 +351,12 @@ exports.fetchArticleData = (
           queryBuilder
             .where(
               "table_of_articles_with_commentcount.title",
-              "like",
+              "ilike",
               `%${search}%`
             )
             .orWhere(
               "table_of_articles_with_commentcount.body",
-              "like",
+              "ilike",
               `%${search}%`
             );
         }
