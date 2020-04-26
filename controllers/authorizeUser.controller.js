@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../knexfile");
-const connection = require("../db/connection"); // Improve with MVC. Make models.
+const connection = require("../db/connection");
 const bcrypt = require("bcrypt");
 
 exports.authorizeUser = (req, res, next) => {

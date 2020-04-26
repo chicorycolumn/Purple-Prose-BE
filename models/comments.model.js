@@ -1,7 +1,6 @@
 const connection = require("../db/connection.js");
 
 exports.fetchCommentVotesJunctionTable = ({ voting_user, comment_id }) => {
-  console.log("modelllll");
   return connection
     .select("*")
     .from("users_comments_table")
@@ -13,7 +12,7 @@ exports.fetchCommentByID = ({ comment_id }) => {
   return connection("comments")
     .select("*")
     .where({ comment_id: comment_id })
-    .then(commentArr => {
+    .then((commentArr) => {
       if (commentArr.length === 0) {
         return Promise.reject({ status: 404, customStatus: "404a" });
       } else {
@@ -26,18 +25,16 @@ exports.addVoteToCommentByUser = (
   { comment_id },
   { inc_votes = 0, voting_user }
 ) => {
-  console.log("modellll");
   // Checking if trying to submit invalid vote.
   if (inc_votes !== 1 && inc_votes !== -1 && inc_votes !== 0) {
     return Promise.reject({ status: 400, customStatus: "400d" });
   }
-  console.log("here?");
   return connection
     .select("*")
-    .from("users_comments_table") //MAKE THIS TABLE.
+    .from("users_comments_table")
     .where("voting_user", voting_user)
     .andWhere("comment_id", comment_id)
-    .then(rows => {
+    .then((rows) => {
       if (rows.length) {
         //Checking if same user trying to upvote or downvote s/th that is already upvoted/downvoted.
         if (
@@ -52,7 +49,7 @@ exports.addVoteToCommentByUser = (
             .andWhere("comment_id", comment_id)
             .increment("inc_votes", inc_votes)
             .returning("*")
-            .then(rows => {
+            .then((rows) => {
               return rows[0];
             });
         }
@@ -62,11 +59,11 @@ exports.addVoteToCommentByUser = (
         .insert({
           voting_user: voting_user,
           comment_id: comment_id,
-          inc_votes: inc_votes
+          inc_votes: inc_votes,
         })
         .into("users_comments_table")
         .returning("*")
-        .then(resArr => {
+        .then((resArr) => {
           return resArr[0];
         });
     });
@@ -87,20 +84,20 @@ exports.updateCommentDetails = (
   } else
     return connection("comments")
       .where({ comment_id: comment_id })
-      .modify(queryBuilder => {
+      .modify((queryBuilder) => {
         if (inc_votes !== undefined) {
           queryBuilder = queryBuilder.increment("votes", inc_votes);
         }
       })
-      .modify(queryBuilder => {
+      .modify((queryBuilder) => {
         if (body !== undefined) {
           queryBuilder = queryBuilder.update({
-            body: body
+            body: body,
           });
         }
       })
       .returning("*")
-      .then(comments => {
+      .then((comments) => {
         if (comments.length === 0) {
           return Promise.reject({ status: 404, customStatus: "404a" });
         } else return comments[0];
@@ -111,7 +108,7 @@ exports.deleteCommentByID = ({ comment_id }) => {
   return connection("comments")
     .where({ comment_id: comment_id })
     .del()
-    .then(numberRowsDeleted => {
+    .then((numberRowsDeleted) => {
       if (numberRowsDeleted === 0) {
         return Promise.reject({ status: 404, customStatus: "404a" });
       } else return numberRowsDeleted;
