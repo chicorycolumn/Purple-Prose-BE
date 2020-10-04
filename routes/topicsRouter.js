@@ -1,8 +1,8 @@
-const topicsRouter = require("express").Router(); // still using express, right?
+const topicsRouter = require("express").Router();
 const {
   getTopics,
   postNewTopic,
-  patchTopic
+  patchTopic,
 } = require("../controllers/topics.controller");
 const { handle405s } = require("../errors/errors");
 const { authorizeUser } = require("../controllers/authorizeUser.controller");

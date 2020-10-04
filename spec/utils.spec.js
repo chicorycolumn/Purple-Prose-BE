@@ -3,7 +3,7 @@ const {
   formatDates,
   makeRefObj,
   formatComments,
-  doesValueExistInTable
+  doesValueExistInTable,
 } = require("../db/utils/utils");
 
 describe("doesValueExistInTable", () => {});
@@ -17,11 +17,11 @@ describe("formatDates", () => {
   it("Takes an array of objects and returns a new array. Each item in the new array has its timestamp at created_by converted into a Javascript date object. Everything else in each item is maintained.", () => {
     const input = [
       { name: "Adam", created_at: millisecs1 },
-      { name: "Lilith", created_at: millisecs2 }
+      { name: "Lilith", created_at: millisecs2 },
     ];
     const expected = [
       { name: "Adam", created_at: date1 },
-      { name: "Lilith", created_at: date2 }
+      { name: "Lilith", created_at: date2 },
     ];
     const actual = formatDates(input);
     expect(actual).to.eql(expected);
@@ -29,13 +29,12 @@ describe("formatDates", () => {
   it("Returns a new array of new objects, does not mutate original array or original objects.", () => {
     const input = [
       { name: "Adam", created_at: millisecs1 },
-      { name: "Lilith", created_at: millisecs2 }
+      { name: "Lilith", created_at: millisecs2 },
     ];
     const copyInput = [
       { name: "Adam", created_at: millisecs1 },
-      { name: "Lilith", created_at: millisecs2 }
+      { name: "Lilith", created_at: millisecs2 },
     ];
-    //const expected = [{name: "Adam", created_at: date1}, {name: "Lilith", created_at: date2}]
     const actual = formatDates(input);
     expect(actual).to.not.equal(input);
     expect(input).to.eql(copyInput);
@@ -66,7 +65,7 @@ describe("makeRefObj", () => {
     const input = [
       { name: "Brian", age: 14 },
       { name: "Brienne", age: 27 },
-      { name: "King Brine", age: 512 }
+      { name: "King Brine", age: 512 },
     ];
     const expected = { Brian: 14, Brienne: 27, "King Brine": 512 };
     const actual = makeRefObj(input, "name", "age");
@@ -76,12 +75,12 @@ describe("makeRefObj", () => {
     const input = [
       { name: "Brian", age: 14 },
       { name: "Brienne", age: 27 },
-      { name: "King Brine", age: 512 }
+      { name: "King Brine", age: 512 },
     ];
     const copyInput = [
       { name: "Brian", age: 14 },
       { name: "Brienne", age: 27 },
-      { name: "King Brine", age: 512 }
+      { name: "King Brine", age: 512 },
     ];
     makeRefObj(input, "name", "age");
     expect(input).to.eql(copyInput);
@@ -110,15 +109,15 @@ describe("formatComments", () => {
         belongs_to: "Seventeen",
         created_by: "icellusedkars",
         votes: 20,
-        created_at: millisecs1
+        created_at: millisecs1,
       },
       {
         body: "This morning, I showered for nine minutes.",
         belongs_to: "Eighty-four",
         created_by: "butter_bridge",
         votes: 16,
-        created_at: millisecs2
-      }
+        created_at: millisecs2,
+      },
     ];
 
     const expected = [
@@ -127,15 +126,15 @@ describe("formatComments", () => {
         article_id: 17,
         author: "icellusedkars",
         votes: 20,
-        created_at: date1
+        created_at: date1,
       },
       {
         body: "This morning, I showered for nine minutes.",
         article_id: 84,
         author: "butter_bridge",
         votes: 16,
-        created_at: date2
-      }
+        created_at: date2,
+      },
     ];
 
     const actual = formatComments(input, articleRef);
@@ -157,15 +156,15 @@ describe("formatComments", () => {
         belongs_to: "Seventeen",
         created_by: "icellusedkars",
         votes: 20,
-        created_at: millisecs1
+        created_at: millisecs1,
       },
       {
         body: "This morning, I showered for nine minutes.",
         belongs_to: "Eighty-four",
         created_by: "butter_bridge",
         votes: 16,
-        created_at: millisecs2
-      }
+        created_at: millisecs2,
+      },
     ];
 
     const copyInput = [
@@ -174,15 +173,15 @@ describe("formatComments", () => {
         belongs_to: "Seventeen",
         created_by: "icellusedkars",
         votes: 20,
-        created_at: millisecs1
+        created_at: millisecs1,
       },
       {
         body: "This morning, I showered for nine minutes.",
         belongs_to: "Eighty-four",
         created_by: "butter_bridge",
         votes: 16,
-        created_at: millisecs2
-      }
+        created_at: millisecs2,
+      },
     ];
 
     const actual = formatComments(input, articleRef);

@@ -1,9 +1,9 @@
-const commentsRouter = require("express").Router(); // still using express, right?
+const commentsRouter = require("express").Router();
 const {
   patchCommentDetails,
   dropCommentByID,
   getCommentByID,
-  getCommentVotesJunctionTable
+  getCommentVotesJunctionTable,
 } = require("../controllers/comments.controller");
 const { handle405s } = require("../errors/errors");
 const { authorizeUser } = require("../controllers/authorizeUser.controller");

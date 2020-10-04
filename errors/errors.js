@@ -1,5 +1,5 @@
 exports.myErrMsgs = {
-  "400": "400 Bad request: Generic error message.",
+  400: "400 Bad request: Generic error message.",
   "400a":
     "400a Bad request: Missing/incorrect fields in body of request, eg POST.",
   "400b":
@@ -10,7 +10,7 @@ exports.myErrMsgs = {
   "400e":
     "400e Bad request: Re the fields in body of request, there was some schema error, such as you entering too many characters for a field.",
 
-  "404": "404 No such resource: You may have mistyped the url.",
+  404: "404 No such resource: You may have mistyped the url.",
   "404a":
     "404a No such resource: Likely a valid but non-corresponding identifier in the url.",
   "404b":
@@ -18,8 +18,8 @@ exports.myErrMsgs = {
   "404c":
     "404c No such resource: You may be specified a non-existent value in the body of your request.",
 
-  "405":
-    "405 Method not allowed: You cannot make such a request (eg DELETE, POST, GET, etc) at this particular endpoint. You may have spelled the url wrong."
+  405:
+    "405 Method not allowed: You cannot make such a request (eg DELETE, POST, GET, etc) at this particular endpoint. You may have spelled the url wrong.",
 };
 
 const myErrMsgs = exports.myErrMsgs;
@@ -32,27 +32,15 @@ exports.pSQLErrorsHandler = (err, req, res, next) => {
   }
 
   const errCodes = {
-    "42703": { status: 400, msg: myErrMsgs["400c"] }, // empty obj
-    //User tried to filter by a nonexistent column, in the url query.
+    42703: { status: 400, msg: myErrMsgs["400c"] },
 
-    "23503": { status: 404, msg: myErrMsgs["404c"] }, // null
-    //User entered POST request with a key referencing an author/topic/etc that doesn't exist.
+    23503: { status: 404, msg: myErrMsgs["404c"] },
 
-    "23502": { status: 400, msg: myErrMsgs["400a"] }, // null
-    //User entered empty object for POST request.
-    //User entered object with wrong keys for POST request.
+    23502: { status: 400, msg: myErrMsgs["400a"] },
 
     "22P02": { status: 400, msg: myErrMsgs["400b"] },
-    //User entered banana as :article_id .
 
-    "22001": { status: 400, msg: myErrMsgs["400e"] }
-    //User entered over 2000 chars for body of article in POST req .
-
-    /* This was for url id of "banana" instead of number, 
-        but also for age key in post having value "banana" not number. 
-        Is that too broad a category for this message to cover? */
-
-    //'22P02': { status: 400, msg: '22P02 Invalid route: url or id not valid' } // string not num eg
+    22001: { status: 400, msg: myErrMsgs["400e"] },
   };
   if (err.code !== undefined) {
     res.status(errCodes[err.code].status).send({ msg: errCodes[err.code].msg });
@@ -60,8 +48,6 @@ exports.pSQLErrorsHandler = (err, req, res, next) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
-  // handles status, custom erors, that iv'e written
-
   if (err.status !== undefined) {
     if (err.customStatus !== undefined) {
       res.status(err.status).send({ msg: myErrMsgs[err.customStatus] });

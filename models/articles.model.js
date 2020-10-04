@@ -328,7 +328,6 @@ exports.fetchArticleData = (
 
     .modify((queryBuilder) => {
       if (article_id !== undefined) {
-        //Endpoint wants one article.
         queryBuilder
           .where("table_of_articles_with_commentcount.article_id", article_id)
           .first(
@@ -377,9 +376,7 @@ exports.fetchArticleData = (
               ? articleData
               : articleData.slice(p * limit - limit, p * limit),
           total_count: articleData.length,
-        }; // articleData is array
-
-        // }
+        };
       } else {
         calculateVotesAndParseIntCommentCount(articleData);
         return articleData;
@@ -531,7 +528,7 @@ exports.createNewArticle = ({
 
 exports.deleteArticleByID = ({ article_id }) => {
   return connection("articles")
-    .where({ article_id: article_id }) // No quotation marks needed.
+    .where({ article_id: article_id })
     .del()
     .then((numberRowsDeleted) => {
       if (numberRowsDeleted === 0) {
