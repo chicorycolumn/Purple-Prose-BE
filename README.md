@@ -1,8 +1,8 @@
-# NC News backend
+# Purple Prose backend
 
 ## Description
 
-NC News is an online news aggregation forum where users can write and share articles as well as commenting and voting on each other's articles and comments. Have you used Reddit? It's Reddit.
+Purple Prose is an online news aggregation forum where users can write and share articles as well as commenting and voting on each other's articles and comments. Have you used Reddit? It's Reddit.
 
 This project is a fullstack RESTful API, with a PSQL database where Knex was used as a query builder, and a Frontend of React and CSS Modules. It was a solo project during the last week of the Backend and Frontend blocks of the [Northcoders](https://northcoders.com/) coding bootcamp.
 
@@ -26,7 +26,7 @@ You can also download this repository and run the project locally by following t
 
 3. Run `npm run newdev` and then `npm start` to run the project. The former is a combined command which will drop the SQL tables, create new ones, rollback and run any necessary migrations, seed the data, set the environment to development mode.
 
-4. Use an API testing tool like Insomnia to test the endpoints of this project, by sending http requests to [http://localhost:5000](http://localhost:5000).
+4. Use an API testing tool like Insomnia to test the endpoints of this project, by sending http requests to [http://localhost:9090](http://localhost:9090).
 
 5. Run the battery of tests written specifically for this project with `npm run newtest`. This is a combined command which will drop the SQL tables, create new ones, rollback and run any necessary migrations, seed the data, set the environment to testing mode, and finally run the tests.
 

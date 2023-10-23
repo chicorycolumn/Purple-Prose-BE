@@ -18,14 +18,14 @@ exports.myErrMsgs = {
   "404c":
     "404c No such resource: You may be specified a non-existent value in the body of your request.",
 
-  405:
-    "405 Method not allowed: You cannot make such a request (eg DELETE, POST, GET, etc) at this particular endpoint. You may have spelled the url wrong.",
+  405: "405 Method not allowed: You cannot make such a request (eg DELETE, POST, GET, etc) at this particular endpoint. You may have spelled the url wrong.",
 };
 
 const myErrMsgs = exports.myErrMsgs;
 
 exports.pSQLErrorsHandler = (err, req, res, next) => {
-  const wordsFromError = err.toString().split(" ");
+  const wordsFromError = err.toString();
+  console.log({ "err.code": err.code, wordsFromError: wordsFromError });
 
   if (err.code === "22P02" && wordsFromError.slice(-1)[0] === '"NaN"') {
     res.status(400).send({ msg: myErrMsgs["400d"] });

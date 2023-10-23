@@ -22,14 +22,14 @@ const customConfig = {
   development: {
     connection: {
       database: "nc_news",
-      user: "$$USERNAME",
+      user: "postgres",
       password: "$$PASSWORD",
     },
   },
   test: {
     connection: {
       database: "nc_news_test",
-      user: "$$USERNAME",
+      user: "postgres",
       password: "$$PASSWORD",
     },
   },
